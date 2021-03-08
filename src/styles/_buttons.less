@@ -1,0 +1,104 @@
+// 按钮点击样式
+.btn-active-function(@bgColor) when(iscolor(@bgColor)) {
+  &:active,
+  &.button-hover {
+    background: darken(@bgColor, 5%);
+  }
+}
+
+.btn-disabled-function(@color,@bgColor) when(iscolor(@bgColor)) {
+  &[disabled] {
+    &,
+    &:not([type]) {
+      color: lighten(@color, 5%);
+      background: fadeout(@bgColor, 30%);
+    }
+  }
+}
+
+// 生成按钮样式
+.btn-function(@color,@bgColor,@bdColor:transparnet) {
+  width: 640px;
+  height: 90px;
+  line-height: 90px;
+  background: @bgColor;
+  border-radius: 75px;
+  font-size: 36px;
+  color: @color;
+  border: 2px solid @bdColor;
+  .btn-active-function(@bgColor);
+  .btn-disabled-function(@color, @bgColor);
+}
+
+// 生成渐变按钮
+.btn-linear-function(@color,@bgColor,@bgColor2) {
+  @bg: linear-gradient(180deg, @bgColor 0%, @bgColor2 100%);
+  .btn-function(@color, @bg);
+  &:active,
+  &.button-hover {
+    background: linear-gradient(
+      180deg,
+      (darken(@bgColor, 5%)) 0%,
+      (darken(@bgColor2, 5%)) 100%
+    );
+  }
+  &[disabled] {
+    &,
+    &:not([type]) {
+      color: lighten(@color, 5%);
+      background: linear-gradient(
+        180deg,
+        (fadeout(@bgColor, 30%)) 0%,
+        (fadeout(@bgColor2, 30%)) 100%
+      );
+    }
+  }
+}
+// 覆盖微信默认按钮样式
+button {
+  padding: 0;
+  background-color: inherit;
+  box-shadow: none;
+  // line-height: inherit;
+  font-size: inherit;
+  &::after {
+    border: none;
+    box-shadow: none;
+  }
+  &.button-hover {
+    background-color: transparent;
+    box-shadow: none;
+  }
+}
+
+.button-as-view {
+  background: none;
+  display: block;
+  width: 100%;
+  line-height: 1.5;
+}
+
+.btn-linear-green {
+  .btn-linear-function(#fff, rgba(13, 226, 164, 1), rgba(21, 195, 195, 1));
+}
+
+/*
+* 按钮样式命名规范
+* btn-@color-@bgColor
+*/
+
+.btn-grey-white {
+  .btn-function(#999, #fff);
+}
+
+.btn-red-white {
+  .btn-function(#f94e36, #fff, #f94e36);
+}
+
+.btn-green-white {
+  .btn-function(#0ed49b, #fff, #0ed49b);
+}
+
+.btn-green {
+  .btn-function(#fff, #0ed49b);
+}
